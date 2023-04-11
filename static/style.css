@@ -1,0 +1,93 @@
+/* Set background color and font styles */
+body {
+    /* background-color: #F2F2F2; */
+    background-image: url("/static/images/bodyimage.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .col.headline {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  
+  .col.headline h1 {
+    font-size: 60px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+  
+  .col.headline h1 span:first-child {
+    color: #1d31e6;
+  }
+  
+  .col.headline h1 span:last-child {
+    color: #ffffff;
+  }
+
+  h1 {
+    background-color: #008080;
+    color: white;
+    transform: translateY(50%);
+  }
+
+  /* Style the form */
+  form {
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 400px;
+    /* top: 50%; */
+    transform: translateY(70%);
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Style the form labels and input fields */
+  label, input {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #DDD;
+    transition: border-color 0.2s;
+  }
+  
+  input[type="text"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: #2ecc71;
+  }
+  
+  /* Style the submit button */
+  input[type="submit"] {
+    background-color: #2ecc71;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #27ae60;
+  }
+  
