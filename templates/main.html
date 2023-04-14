@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>엠씨테크놀로지</title>
+    <a href ='/logout'> <button class="favorite styled" type="button">LOGOUT</button></a> 
+    <link rel="stylesheet" href="static/cctest.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+  <br></br><p></p>
+  <div id="update-data"></div>
+  <canvas id="myChart"></canvas>
+ </body>
+</html>
+<script>
+var chart;
+    $(document).ready(function() {
+      // Define the updateChart function to update the chart data
+      function updateChart() {
+        $.ajax({
+          url: '/update_data',
+          dataType: 'json',
+          success: function(data) {
+            if (chart) {
+              // Update the existing chart with new data
+              chart.data.labels = data.labels;
+              chart.data.datasets[0].data = data.values;
+              chart.update();
+              document.getElementById('update-data').innerHTML = data.currnettime;
+            } else {
+              // Create a new chart if one doesn't exist yet
+              var ctx = document.getElementById('myChart').getContext('2d');
+              chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: data.labels,
+                  datasets: [{
+                    label: 'My Dataset',
+                    data: data.values,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 5
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        beginAtZero: true
+                      }
+                    }]
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+      // Call the updateChart function initially and then every 1 seconds
+      setInterval(updateChart, 1000);
+    });
+
+</script>
+
