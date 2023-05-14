@@ -1,42 +1,178 @@
-.favorite {
+
+  
+  .header {
+    background-color: #ded2a5;
+    color: white;
+    border-radius: 4px;
+    border: 3px solid rgb(253, 253, 253); /* 테두리 생성 */
+    display: block; /* Flexbox 레이아웃 설정 */
+    align-items: center; /* 수직 가운데 정렬 */
+    padding: 30px 30px;
+  }
+
+  .favorite {
     background-color: #4CAF50;
     border: none;
     color: white;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    cursor: pointer;
+    float: right; /* 오른쪽으로 배치 */
+  }
+
+  .header h1 {
+    display: inline;
+  
+  }
+  
+
+  .dbserch{
+    background-color: #5c5454; /* 배경색 지정 */
+    border: 1px solid #CCC; /* 테두리 설정 */
+    font-size: 14px; /* 글꼴 크기 설정 */
+    color: #333; /* 글꼴 색상 설정 */
+    height: 200px; /* 높이를 200px로 설정 */
+    width: 30%; /* 너비를 300px로 설정 */
+    position: relative;
+  }
+  #time {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-family: segment;
+    float:right;
+  }
+  
+  #searchForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
   }
   
-  .styled {
-    background-color: #008CBA;
-    color: white;
-    border-radius: 4px;
-    border: none;
-    float: right; /* ��ư�� ���������� �����մϴ�. */
+  button:hover {
+    background-color: #45a049;
+  }
+  body 
+  {
+    background-color: black;
+  }
+  .imgdiv{
+    width: 69.5%;
+    border: 1px solid #ccc;
+    height: auto;
+    float:right;
+    position: relative;
+    top:-202px;
+    
+  }
+  .my-image {
+    width: 300px;
+    height: 200px;
+    border: 0px solid #ccc;
+    border-radius: 1px;
+    position: relative;
+    float:right;
+    top:0px;
+    right: 40%;
+
+    /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); */
+  }
+  .chartframe {
+    top: -182px;
+    left: 30.5%;
+    display: inline-block; /* 필요에 따라 요소를 인라인으로 배치 */
+    position: relative;
+    width:69.5%;
+    height: 400px;
+    border: 1px solid rgb(215, 67, 67);
+
+  }
+
+  #myChart 
+  {
+    width: 600px;
+    height: 200px;
+    margin: 50px auto;
+  }
+
+  .chartframe2 {
+    top: -995px;
+    left: 30.5%;
+    display: inline-block; /* 필요에 따라 요소를 인라인으로 배치 */
+    position: relative;
+    width:69.5%;
+    height: 400px;
+    border: 1px solid rgb(215, 67, 67);
+
+  }
+
+  #myChart2 
+  {
+    width: 600px;
+    height: 200px;
+    margin: 50px auto;
+  }
+
+  .tableframe {
+    font-size: 14px; /* 글꼴 크기 설정 */
+    color: #ffffff; /* 글꼴 색상 설정 */
+    background-color: #000000;
+    border: 1px solid #a75252;  /* 테두리 설정 */
+    padding: 0px;  /* 내부 여백 설정 */
+    top: -590px;
+    width:30%;
+    height:900px;
+    position: relative;
   }
   
-  .styled:hover {
-    background-color: #006080;
+  .tableframe table {
+    width: 100%;  /* 테이블의 가로 너비를 100%로 설정 */
+    border-collapse: collapse;  /* 테이블 셀 경계를 병합하여 테두리 스타일 적용 */
+  }
+  
+  .tableframe th, .tableframe td {
+    border: 1px solid #ccc;  /* 셀 테두리 설정 */
+    padding: 8px;  /* 셀 내부 여백 설정 */
+  }
+  
+  .tableframe th {
+    background-color: #948e8e;  /* 헤더 셀 배경색 설정 */
+    font-weight: bold;  /* 헤더 셀 글꼴 굵게 설정 */
+  }
+  
+  .selected {
+    background-color: #ffcc00;  /* 선택된 셀의 배경색 설정 */
   }
 
-  #update-data {
-    background-color: #F0F0F0; /* ���� ���� */
-    border: 1px solid #CCC; /* �׵θ� ���� */
-    padding: 10px; /* ���� ���� ���� */
-    font-size: 14px; /* �۲� ũ�� ���� */
-    color: #333; /* �۲� ���� ���� */
-    float: right;
+  footer {
+    background-color: #605e5e;
+    padding: 5px;
+    text-align: center;
   }
-
-body {
-    background-color: #f5f5f5;
-  }
-  #myChart {
-    width: 800px;
-    height: 400px;
-    margin: 50px auto;
+  
+  footer p {
+    font-size: 14px;
+    color: #3c07fa;
+    font-weight: bold;
   }

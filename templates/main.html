@@ -1,66 +1,221 @@
 <!DOCTYPE html>
 <html>
+<!------------------------- 주석 내용------------------------------------- -->
+<!------------------------- 주석 내용------------------------------------- -->
   <head>
     <title>엠씨테크놀로지</title>
-    <a href ='/logout'> <button class="favorite styled" type="button">LOGOUT</button></a> 
     <link rel="stylesheet" href="static/cctest.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
+
+ <!------------------------- 주석 내용------------------------------------- -->
+ <!------------------------- 주석 내용------------------------------------- -->
   <body>
-  <br></br><p></p>
-  <div id="update-data"></div>
-  <canvas id="myChart"></canvas>
+    <div class="header" >
+      <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;스마트 센서 냉각팬 밸런스 시스템  </h1>
+      <a href ='/logout'> <button class="favorite" type="button">LOGOUT</button> </a>  
+    </div>
+    <P></p>
+    <div class="dbserch">
+      <span id="time"></span>
+      <form id="searchForm">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate">
+      
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate">
+      
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    <div class = "imgdiv">
+    <img src="/static/images/smartfan01.png" alt="대체 텍스트"class="my-image"> </img>
+    </div>
+    <div class="chartframe">
+      <canvas style="border: 1px solid black;" id="myChart"></canvas>
+    </div>
+    <div class="tableframe" id="result"></div>
+    <div class="chartframe2">
+      <canvas style="border: 1px solid black;" id="myChart2"></canvas>
+    </div>
+    <footer>
+      <p>&copy; 2023 MCTECHNOLOGY Website. All rights reserved.</p>
+    </footer>
  </body>
+<!------------------------- 주석 내용------------------------------------- -->
+<!------------------------- 주석 내용------------------------------------- -->
 </html>
 <script>
-var chart;
-    $(document).ready(function() {
-      // Define the updateChart function to update the chart data
-      function updateChart() {
-        $.ajax({
-          url: '/update_data',
-          dataType: 'json',
-          success: function(data) {
-            if (chart) {
-              // Update the existing chart with new data
-              chart.data.labels = data.labels;
-              chart.data.datasets[0].data = data.values;
-              chart.update();
-              document.getElementById('update-data').innerHTML = data.currnettime;
-            } else {
-              // Create a new chart if one doesn't exist yet
-              var ctx = document.getElementById('myChart').getContext('2d');
-              chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: data.labels,
-                  datasets: [{
-                    label: 'My Dataset',
-                    data: data.values,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 5
-                  }]
-                },
-                options: {
-                  responsive: true,
-                  scales: {
-                    yAxes: [{
-                      ticks: {
-                        beginAtZero: true
-                      }
-                    }]
-                  }
-                }
-              });
-            }
-          }
-        });
-      }
-      // Call the updateChart function initially and then every 1 seconds
-      setInterval(updateChart, 1000);
-    });
+//------------------------------------------------------------------------------
+// time function 
+//------------------------------------------------------------------------------
 
+    function updateTime() {
+      var date = new Date();
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var seconds = date.getSeconds();
+      
+      var timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+      
+      document.getElementById('time').innerHTML = timeString;
+    }
+
+    setInterval(updateTime, 1000);
+
+//------------------------------------------------------------------------------
+// 날짜로 DB 테이블 검색 function
+//------------------------------------------------------------------------------
+
+      document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault();  // 기본 동작인 폼 제출 방지
+    
+      var startDate1 = document.getElementById('startDate').value;  // 선택한 날짜 가져오기
+      var endDate1 = document.getElementById('endDate').value;  // 선택한 날짜 가져오기
+     
+      if (startDate1 === '' || endDate1 === '') 
+      {
+        alert('Please select both the start date and end date.');
+      } else
+      {
+        fetch('/search?searchDate=' + startDate1+endDate1)  // GET 요청에 선택한 날짜를 추가하여 서버로 전달
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            console.log(data.serialNum)
+            var tableHTML = createTableHTML(data.serialNum, data.daydate);
+            document.getElementById('result').innerHTML =tableHTML;  // 결과를 출력할 요소에 HTML 삽입
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    });
+    
+//------------------------------------------------------------------------------
+// DB Tabled의 목록을 HTML Table로 바꾸주는 function
+//------------------------------------------------------------------------------
+
+function createTableHTML(data, time) {
+  var tableHTML = '<table id="myTable">';
+  tableHTML += '<tr><th>SerialNum</th><th>Time</th></tr>';
+
+  for (var i = 0; i < data.length; i++) {
+    tableHTML += '<tr>';
+    tableHTML += '<td class="tableCell">' + data[i] + '</td>';
+    tableHTML += '<td class="tableCell">' + time[i] + '</td>';
+    tableHTML += '</tr>';
+  }
+
+  tableHTML += '</table>';
+
+  return tableHTML;
+}
+
+
+
+    
+//------------------------------------------------------------------------------
+// DB Tabled의 목록 HTML Table에서 Cell 선택시 이벤트 function
+//------------------------------------------------------------------------------
+
+var chart;
+var chart2;
+
+document.addEventListener('click', function(event) {
+  var target = event.target;
+  
+  if (target.classList.contains('tableCell')) {
+    var selectedRows = document.getElementsByClassName('selected');
+    for (var i = 0; i < selectedRows.length; i++) {
+      selectedRows[i].classList.remove('selected');
+    }
+    var selectedRow = target.parentNode;
+    selectedRow.classList.add('selected');
+
+    var firstCell = selectedRow.querySelector('td:first-child');
+    var selectedCellContent = firstCell.textContent;
+    console.log(selectedCellContent);
+
+    fetch('/tabledb?dbDate=' + selectedCellContent)  // GET 요청에 선택한 날짜를 추가하여 서버로 전달
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+   
+      console.log(data.skills_data)
+      chart.data.labels = Array.from({ length: 1000 }, (_, index) => (index + 1).toString());
+      chart.data.datasets[0].data = data.skills_data;
+      chart.data.datasets[1].data = data.skills_data;
+      chart.update();
+
+      chart2.data.labels = Array.from({ length: 1000 }, (_, index) => (index + 1).toString());
+      chart2.data.datasets[0].data = data.skills_data;
+      chart2.data.datasets[1].data = data.skills_data;
+      chart2.update();
+
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  }
+});
+//------------------------------------------------------------------------------
+//차트 1
+//------------------------------------------------------------------------------
+// Create a new chart
+var ctx = document.getElementById('myChart').getContext('2d');
+chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: Array.from({ length: 1000 }, (_, index) => (index + 1).toString()),
+    datasets: [{
+      label: 'My Dataset',
+      data: [], // Initial empty data
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2
+    }, {
+      label: 'Additional Line',
+      data: [], // Initial empty data
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true
+  }
+});
+
+
+//------------------------------------------------------------------------------
+//차트 2
+//------------------------------------------------------------------------------
+const ctx2 = document.getElementById('myChart2').getContext('2d');
+chart2 = new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: Array.from({ length: 1000 }, (_, index) => (index + 1).toString()),
+    datasets: [{
+      label: 'My Dataset',
+      data: [], // Initial empty data
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2
+    }, {
+      label: 'Additional Line',
+      data: [], // Initial empty data
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true
+  }
+});
 </script>
 
